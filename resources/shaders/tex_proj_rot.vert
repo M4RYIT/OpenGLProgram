@@ -18,9 +18,15 @@ vec3 perspective(vec3 pos)
     float fov_factor = tan(radians(fov * 0.5f));
     
     vec3 persp;   
-    persp.x = (pos.x / -pos.z) / (fov_factor * aspect_ratio);
-    persp.y = (pos.y / -pos.z) / fov_factor;    
+    
+    persp.x = (pos.x / -pos.z);
+    persp.x = persp.x / (fov_factor * aspect_ratio);
+    
+    persp.y = (pos.y / -pos.z);
+    persp.y = persp.y / fov_factor;    
+    
     persp.z = ((-pos.z - near) / (far - near)) * 2 - 1;
+    
     return persp;
 }
 
@@ -47,19 +53,19 @@ vec3 rotate(vec3 v, int axis, float angle)
 
 void main() 
 {
-    vec3 mod_pos = scale(vert_pos, obj_scale);
-    
+    vec3 mod_pos = vert_pos;
+    mod_pos = scale(mod_pos, obj_scale);
+
     mod_pos = rotate(mod_pos, 0, obj_rot.x);
     mod_pos = rotate(mod_pos, 1, obj_rot.y);
     mod_pos = rotate(mod_pos, 2, obj_rot.z);
 
     mod_pos.x += obj_pos.x;
     mod_pos.y += obj_pos.y;
-    mod_pos.y += -obj_pos.z;
+    mod_pos.z += -obj_pos.z;
 
     mod_pos = perspective(mod_pos);
-    
-    gl_Position = vec4(mod_pos, 1.f);
 
+    gl_Position = vec4(mod_pos, 1.f);
     vert_uv_out = vert_uv;
 }

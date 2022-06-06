@@ -183,7 +183,7 @@ void TestScene::TexProjRot()
     ParseObj("resources/models/cube_no_norm.obj", CubeMesh);
 
     Object* CubeObj = new Object();
-    CubeObj->Tr.Position[1] += 5.f;
+    CubeObj->Tr.Position[2] += 5.f;
 
     TexProjRotShader* TexProjRotSh = new TexProjRotShader();
     TexProjRotSh->AspectRatio = (float)ViewportSize[0] / (float)ViewportSize[1];
