@@ -1,9 +1,8 @@
 #include "shaders\ColorMulShader.h"
 
 #include "Mesh.h"
-#include "Color.h"
 
-ColorMulShader::ColorMulShader()
+ColorMulShader::ColorMulShader() : ElapsedTime(0.f)
 {
     NewShader("resources/shaders/color_mul.vert", "resources/shaders/color_mul.frag");
 }
@@ -23,19 +22,19 @@ void ColorMulShader::Start(const Mesh& InMesh)
 
     glGenBuffers(1, &PosVbo);
     glBindBuffer(GL_ARRAY_BUFFER, PosVbo);
-    glBufferData(GL_ARRAY_BUFFER, InMesh.VertsPosition.size() * sizeof(float), InMesh.VertsPosition.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, InMesh.Vertices.size() * sizeof(float), InMesh.Vertices.data(), GL_STATIC_DRAW);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
     glGenBuffers(1, &ColVbo);
     glBindBuffer(GL_ARRAY_BUFFER, ColVbo);
-    glBufferData(GL_ARRAY_BUFFER, InMesh.VertsColors.size() * sizeof(float), InMesh.VertsColors.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, VertsColors.size() * sizeof(float), VertsColors.data(), GL_STATIC_DRAW);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(1);
 
     glGenBuffers(1, &Ebo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, Ebo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, InMesh.VertsIndex.size() * sizeof(uint32_t), InMesh.VertsIndex.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, InMesh.Indices.size() * sizeof(uint32_t), InMesh.Indices.data(), GL_STATIC_DRAW);
 }
 
 void ColorMulShader::Update(float DeltaTime)
@@ -45,14 +44,12 @@ void ColorMulShader::Update(float DeltaTime)
 
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)0);
     
-    Color BaseColor;
-    glGetnUniformfv(ProgramId,glGetUniformLocation(ProgramId, "base_color"), 4 * sizeof(float), (GLfloat*)&BaseColor);
+    ElapsedTime += DeltaTime;
 
-    BaseColor.R = sinf(BaseColor.R + DeltaTime) * 0.5f + 0.5f;
-    BaseColor.G = sinf(BaseColor.G + DeltaTime) * 0.5f + 0.5f;
-    BaseColor.B = sinf(BaseColor.B + DeltaTime) * 0.5f + 0.5f;
-    BaseColor.A = 1.f;
-    glUniform4fv(glGetUniformLocation(ProgramId, "base_color"), 1, (GLfloat*)&BaseColor);
-
-    glBindVertexArray(0);
+    std::vector<float> Color(4);
+    Color[0] = sinf(BaseColor[0] + ElapsedTime) * 0.5f + 0.5f;
+    Color[1] = sinf(BaseColor[1] + ElapsedTime) * 0.5f + 0.5f;
+    Color[2] = sinf(BaseColor[2] + ElapsedTime) * 0.5f + 0.5f;
+    Color[3] = 1.f;
+    glUniform4fv(glGetUniformLocation(ProgramId, "base_color"), 1, (GLfloat*)Color.data());
 }

@@ -20,13 +20,13 @@ void IndexShader::Start(const Mesh& InMesh)
 
     glGenBuffers(1, &PosVbo);
     glBindBuffer(GL_ARRAY_BUFFER, PosVbo);
-    glBufferData(GL_ARRAY_BUFFER, InMesh.VertsPosition.size() * sizeof(float), InMesh.VertsPosition.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, InMesh.Vertices.size() * sizeof(float), InMesh.Vertices.data(), GL_STATIC_DRAW);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
     glGenBuffers(1, &Ebo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, Ebo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, InMesh.VertsIndex.size() * sizeof(uint32_t), InMesh.VertsIndex.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, InMesh.Indices.size() * sizeof(uint32_t), InMesh.Indices.data(), GL_STATIC_DRAW);
 }
 
 void IndexShader::Update(float DeltaTime)

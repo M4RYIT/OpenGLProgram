@@ -6,6 +6,17 @@ void Object::AddComponent(Component* Component)
     Components.push_back(Component);
 }
 
+Object::Object()
+{
+    Tr.Position = {0.f, 0.f, 0.f};
+    Tr.Rotation = {0.f, 0.f, 0.f};
+    Tr.Scale = {1.f, 1.f, 1.f};
+}
+
+Object::Object(Transform InTransform) : Tr(InTransform)
+{
+}
+
 Object::~Object()
 {
     Components.clear();

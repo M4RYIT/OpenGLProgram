@@ -3,21 +3,23 @@
 #include "shaders\Shader.h"
 #include <vector>
 
-class ColorMulShader: public Shader
+class TexProjShader: public Shader
 {
 protected:
     GLuint PosVbo;
-    GLuint ColVbo;
+    GLuint UvVbo;
     GLuint Ebo;
-
+    
     float ElapsedTime;
+
 public:
-    ColorMulShader();
-    ~ColorMulShader();
+    TexProjShader();
+    ~TexProjShader();
 
     virtual void Start(const Mesh& InMesh) override;
     virtual void Update(float DeltaTime) override;
 
     std::vector<float> BaseColor;
-    std::vector<float> VertsColors;
+    GLuint Tex1;
+    GLuint Tex2;
 };

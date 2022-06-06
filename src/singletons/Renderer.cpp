@@ -7,6 +7,11 @@ Renderer::~Renderer()
     Shaders.clear();
 }
 
+void Renderer::ClearShaders()
+{
+    Shaders.clear();
+}
+
 Renderer& Renderer::Get()
 {
     static Renderer* Rnd = nullptr;
@@ -26,17 +31,7 @@ void Renderer::Update(float DeltaTime)
     glClear(GL_COLOR_BUFFER_BIT);
 
     for (Shader*& Shader : Shaders)
-    {        
-        if (Shader->OverrideViewport())
-        {
-
-        }
-
-        if (Shader->OverrideColor())
-        {
-            
-        }
-
+    {   
         Shader->Update(DeltaTime);
     }
 }

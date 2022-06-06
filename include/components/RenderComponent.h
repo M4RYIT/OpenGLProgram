@@ -1,13 +1,13 @@
 #pragma once
 
 #include "Component.h"
-#include "Material.h"
+#include "shaders\Shader.h"
 #include "Mesh.h"
 
 class RenderComponent : public Component
 {
 public:
-    Material RenderMaterial;
+    Shader* RenderMaterial;
     Mesh RenderMesh;
 
     RenderComponent(Object& InOwner, Shader* InShader, const Mesh& InMesh);

@@ -33,6 +33,7 @@ public:
     static std::string ReadShader(const std::string& FilePath);
     static GLuint CreateShader(const std::string& FilePath, GLenum ShaderType);
     static GLuint CreateProgram(GLuint InVertId, GLuint InFragId);
+    static GLuint CreateTexture(const std::string& ImgPath);
     virtual void Update(float DeltaTime) = 0;
     virtual void Start(const Mesh& InMesh) = 0;    
 };

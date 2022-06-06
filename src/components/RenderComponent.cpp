@@ -1,8 +1,10 @@
 #include "components\RenderComponent.h"
+#include "singletons\Renderer.h"
 
 RenderComponent::RenderComponent(Object& InOwner, Shader* InShader, const Mesh& InMesh) : Component(InOwner)
 {
-    RenderMaterial = Material(InShader);
+    Renderer::Get().AddShader(InShader);
+    RenderMaterial = InShader;
     RenderMesh = InMesh;
 }   
 
@@ -12,5 +14,5 @@ void RenderComponent::Update(float DeltaTime){ }
 
 void RenderComponent::Start()
 {
-    RenderMaterial.SetUp(RenderMesh);
+    RenderMaterial->Start(RenderMesh);
 }

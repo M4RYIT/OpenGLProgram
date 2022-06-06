@@ -2,8 +2,8 @@
 
 struct WindowData
 {
-    int Width = 512;
-    int Height = 512;
+    int Width = 800;
+    int Height = 600;
     const char* Title = "MainWindow";
     int VersionMajor = 4;
     int VersionMinor = 5;

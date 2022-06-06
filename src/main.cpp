@@ -21,6 +21,7 @@ int main()
 		Win->Update();
 	}
 
+	Renderer::Get().ClearShaders();
 	delete Scene;
 	delete Win;
 

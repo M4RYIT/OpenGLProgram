@@ -19,7 +19,7 @@ void SimpleShader::Start(const Mesh& InMesh)
 
     glGenBuffers(1, &PosVbo);
     glBindBuffer(GL_ARRAY_BUFFER, PosVbo);
-    glBufferData(GL_ARRAY_BUFFER, InMesh.VertsPosition.size() * sizeof(float), InMesh.VertsPosition.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, InMesh.Vertices.size() * sizeof(float), InMesh.Vertices.data(), GL_STATIC_DRAW);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 }

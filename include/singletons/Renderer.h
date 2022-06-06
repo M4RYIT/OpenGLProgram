@@ -10,7 +10,6 @@ class Renderer
 private:
     std::vector<Shader*> Shaders;
 
-
 public:
     ~Renderer();
 
@@ -19,4 +18,5 @@ public:
     void Update(float DeltaTime);
     void SetViewport(int X, int Y, int Width, int Height);
     void SetBackgroundColor(float R, float G, float B, float A);
+    void ClearShaders();
 };

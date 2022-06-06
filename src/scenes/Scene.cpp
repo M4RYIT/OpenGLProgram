@@ -2,6 +2,12 @@
 
 #include "Object.h"
 
+Scene::Scene(int X, int Y, int W, int H) 
+: ViewportPos{X, Y}, ViewportSize{W, H}
+{
+
+}
+
 Scene::~Scene()
 {
     Objects.clear();

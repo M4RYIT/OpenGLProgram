@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Transform.h"
 #include <vector>
 
 class Component;
@@ -7,11 +8,11 @@ class Component;
 class Object
 {
 public:
-    //Transform
-
+    Transform Tr;
     std::vector<Component*> Components;
 
-    Object() = default;
+    Object();
+    Object(Transform InTransform);
     ~Object();
 
     void AddComponent(Component* Component);
