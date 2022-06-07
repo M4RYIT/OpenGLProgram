@@ -14,10 +14,9 @@ out vec3 world_norm_out;
 void main() 
 {
     mat4 mvp = projection * view * model;
-    
-    gl_Position = mvp * vec4(vert_pos, 1.f);
-    
+    gl_Position = mvp * vec4(vert_pos, 1.f);        
     vert_uv_out = vert_uv;
+
     world_pos_out = (model * vec4(vert_pos, 1.f)).xyz;
-    world_norm_out =  mat3(transpose(inverse(model))) * vert_norm;
+    world_norm_out = mat3(transpose(inverse(model))) * vert_norm;
 }

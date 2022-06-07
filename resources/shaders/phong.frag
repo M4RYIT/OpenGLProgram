@@ -15,7 +15,6 @@ uniform float specular_factor;
 void main() 
 {
     vec4 tex_col = texture(tex, vert_uv_out);
-
     vec3 mesh_color = tex_col.xyz;
 
     //Ambient
@@ -34,7 +33,7 @@ void main()
     float spec_fact = pow(spec_str, specular_factor);
     vec3 specular = vec3(1.f, 1.f, 1.f) * spec_fact;
 
-    vec3 phong = ambient + diffuse + specular;
+    vec3 phong = ambient + diffuse;
 
     frag_color = vec4(phong, 1.f);
 }

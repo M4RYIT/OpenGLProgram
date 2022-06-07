@@ -11,7 +11,7 @@ struct Transform
 
     std::vector<float> Forward()
     {
-        std::vector<float> Direction = {0.f, 0.f, 1.f};
+        std::vector<float> Direction = {0.f, 0.f, -1.f};
         Direction = Rotate(Direction, Rotation[0], 0);
         Direction = Rotate(Direction, Rotation[1], 1);
         Direction = Rotate(Direction, Rotation[2], 2);

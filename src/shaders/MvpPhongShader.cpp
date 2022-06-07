@@ -40,7 +40,7 @@ void MvpPhongShader::Start(const Mesh& InMesh)
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(5 * sizeof(float)));
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(5 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
     glUseProgram(ProgramId);
@@ -67,7 +67,7 @@ void MvpPhongShader::Update(float DeltaTime)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     View = glm::lookAt(ToVec3(Cam->Tr.Position), 
-                       ToVec3(Cam->Tr.Position) + ToVec3InvZ(Cam->Tr.Forward()),
+                       ToVec3(Cam->Tr.Position) + ToVec3(Cam->Tr.Forward()),
                        glm::vec3{0.f, 1.f, 0.f});
     glUniformMatrix4fv(glGetUniformLocation(ProgramId, "view"), 1, GL_FALSE, &View[0][0]);
     
@@ -75,7 +75,7 @@ void MvpPhongShader::Update(float DeltaTime)
     glUniformMatrix4fv(glGetUniformLocation(ProgramId, "projection"), 1, GL_FALSE, &Projection[0][0]);
 
     Model = glm::mat4(1.f);
-    Model = glm::translate(Model, ToVec3InvZ(Obj->Tr.Position));
+    Model = glm::translate(Model, ToVec3(Obj->Tr.Position));
     Model = glm::rotate(Model, glm::radians(Obj->Tr.Rotation[0]), glm::vec3(1.f, 0.f, 0.f));
     Model = glm::rotate(Model, glm::radians(Obj->Tr.Rotation[1]), glm::vec3(0.f, 1.f, 0.f));
     Model = glm::rotate(Model, glm::radians(Obj->Tr.Rotation[2]), glm::vec3(0.f, 0.f, 1.f));

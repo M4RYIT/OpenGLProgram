@@ -206,8 +206,10 @@ void TestScene::TexProjRot()
 
 void TestScene::MvpPhong()
 {
+    Cam->Tr.Position[2] += 8.f;
+
     Object* LightObj = new Object();
-    LightObj->Tr.Position[1] += 4.f;
+    LightObj->Tr.Position[0] += 4.f;
 
     Color LightCol = {1.f, 1.f, 1.f, 1.f};
     PointLightComponent* LightComp = new PointLightComponent(*LightObj, 10.f, LightCol);
@@ -217,8 +219,8 @@ void TestScene::MvpPhong()
     ParseObj("resources/models/stormtrooper.obj", Mesh);
 
     Object* Obj = new Object();
-    Obj->Tr.Position[1] -= 2.f;
-    Obj->Tr.Position[2] += 3.f;
+    Obj->Tr.Position[1] -= 4.f;
+    Obj->Tr.Scale = {2.f, 2.f, 2.f};
 
     MvpPhongShader* MvpPhongSh = new MvpPhongShader();
     MvpPhongSh->AspectRatio = (float)ViewportSize[0] / (float)ViewportSize[1];

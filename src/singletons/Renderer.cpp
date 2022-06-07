@@ -28,7 +28,7 @@ void Renderer::AddShader(Shader* InShader)
 
 void Renderer::Update(float DeltaTime)
 {
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     for (Shader*& Shader : Shaders)
     {   
