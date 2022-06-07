@@ -2,6 +2,8 @@
 
 #include <glad\glad.h>
 #include <string>
+#include <glm/glm.hpp>
+#include <vector>
 
 #define FLOAT(N) N##f
 #define INT(N) N##i
@@ -34,6 +36,8 @@ public:
     static GLuint CreateShader(const std::string& FilePath, GLenum ShaderType);
     static GLuint CreateProgram(GLuint InVertId, GLuint InFragId);
     static GLuint CreateTexture(const std::string& ImgPath);
+    static glm::vec3 ToVec3(std::vector<float> From);
+    static glm::vec3 ToVec3InvZ(std::vector<float> From);
     virtual void Update(float DeltaTime) = 0;
     virtual void Start(const Mesh& InMesh) = 0;    
 };

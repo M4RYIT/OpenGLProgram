@@ -15,4 +15,5 @@ public:
     void TexBlend();
     void TexProj();
     void TexProjRot();
+    void MvpPhong();
 };

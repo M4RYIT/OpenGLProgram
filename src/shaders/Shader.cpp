@@ -10,6 +10,16 @@ Shader::~Shader()
     glDeleteProgram(ProgramId);
 }
 
+glm::vec3 Shader::ToVec3InvZ(std::vector<float> From)
+{
+    return glm::vec3(From[0], From[1], -From[2]);
+}
+
+glm::vec3 Shader::ToVec3(std::vector<float> From)
+{
+    return glm::vec3(From[0], From[1], From[2]);
+}
+
 std::string Shader::ReadShader(const std::string& FilePath)
 {
     std::ifstream InputStream(FilePath, std::ios::ate);

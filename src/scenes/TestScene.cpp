@@ -1,13 +1,16 @@
 #include "scenes\TestScene.h"
 
 #include "Camera.h"
+#include "Color.h"
 #include "Mesh.h"
 #include "Object.h"
+#include "components\PointLightComponent.h"
 #include "components\RenderComponent.h"
 #include "components\RotatorComponent.h"
 #include "shaders\SimpleShader.h"
 #include "shaders\IndexShader.h"
 #include "shaders\ColorMulShader.h"
+#include "shaders\MvpPhongShader.h"
 #include "shaders\TexBlendShader.h"
 #include "shaders\TexProjRotShader.h"
 #include "shaders\TexProjShader.h"
@@ -27,9 +30,9 @@ TestScene::TestScene(int X, int Y, int W, int H) : Scene(X, Y, W, H)
 void TestScene::Init()
 {
     Renderer::Get().SetViewport(ViewportPos[0], ViewportPos[1], ViewportSize[0], ViewportSize[1]);
-    Renderer::Get().SetBackgroundColor(0.f, 0.f, 0.f, 1.f);
+    Renderer::Get().SetBackgroundColor(0.5f, 0.5f, 0.5f, 1.f);
     Cam = new Camera();
-    TexProjRot();
+    MvpPhong();
 }
 
 void TestScene::SimpleTriangle()
@@ -199,4 +202,36 @@ void TestScene::TexProjRot()
     CubeObj->AddComponent(RotComp);
 
     Objects.push_back(CubeObj);
+}
+
+void TestScene::MvpPhong()
+{
+    Object* LightObj = new Object();
+    LightObj->Tr.Position[1] += 4.f;
+
+    Color LightCol = {1.f, 1.f, 1.f, 1.f};
+    PointLightComponent* LightComp = new PointLightComponent(*LightObj, 10.f, LightCol);
+    LightObj->AddComponent(LightComp);
+
+    Mesh Mesh;
+    ParseObj("resources/models/stormtrooper.obj", Mesh);
+
+    Object* Obj = new Object();
+    Obj->Tr.Position[1] -= 2.f;
+    Obj->Tr.Position[2] += 3.f;
+
+    MvpPhongShader* MvpPhongSh = new MvpPhongShader();
+    MvpPhongSh->AspectRatio = (float)ViewportSize[0] / (float)ViewportSize[1];
+    MvpPhongSh->Cam = Cam;
+    MvpPhongSh->Obj = Obj;
+    MvpPhongSh->Tex = Shader::CreateTexture("resources/models/stormtrooper.png");
+    MvpPhongSh->AmbientFactor = 0.2f;
+    MvpPhongSh->SpecularFactor = 40.f;
+    MvpPhongSh->PointLight = LightComp;
+
+    RenderComponent* RndComp = new RenderComponent(*Obj, MvpPhongSh, Mesh);
+    Obj->AddComponent(RndComp);
+
+    Objects.push_back(LightObj);
+    Objects.push_back(Obj);
 }
