@@ -11,20 +11,21 @@ uniform vec3 point_light_pos;
 uniform vec3 camera_pos;
 uniform float ambient_factor;
 uniform float specular_factor;
+uniform vec4 light_col;
+uniform float light_intensity;
 
 void main() 
 {
-    vec4 tex_col = texture(tex, vert_uv_out);
-    vec3 mesh_color = tex_col.xyz;
+    vec3 tex_col = texture(tex, vert_uv_out).xyz;
 
     //Ambient
-    vec3 ambient = mesh_color * ambient_factor;
+    vec3 ambient = tex_col * ambient_factor;
 
     //Diffuse
     vec3 light_dir = normalize(point_light_pos - world_pos_out);
     vec3 norm_n = normalize(world_norm_out);
     float diff_str = max(dot(norm_n, light_dir), 0.f);
-    vec3 diffuse = mesh_color * diff_str;
+    vec3 diffuse = light_col.xyz * diff_str * light_intensity;
 
     //Specular
     vec3 eye_dir = normalize(camera_pos - world_pos_out);
@@ -33,7 +34,11 @@ void main()
     float spec_fact = pow(spec_str, specular_factor);
     vec3 specular = vec3(1.f, 1.f, 1.f) * spec_fact;
 
-    vec3 phong = ambient + diffuse;
+    vec3 phong = ambient + diffuse + specular;
+
+    float d = distance(point_light_pos, world_pos_out);
+    float attenuation = 1.f / (1.f + d * d);
+    phong *= attenuation;
 
     frag_color = vec4(phong, 1.f);
 }

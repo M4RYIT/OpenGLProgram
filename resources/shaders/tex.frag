@@ -3,10 +3,10 @@ out vec4 frag_color;
 
 in vec2 vert_uv_out;
 
-layout (binding = 0) uniform sampler2D wood_tex;
+layout (binding = 0) uniform sampler2D tex;
 
 void main() 
 {
-    vec4 wood_texel = texture(wood_tex, vert_uv_out);
-    frag_color = wood_texel;
+    vec4 texel = texture(tex, vert_uv_out);
+    frag_color = texel;
 }

@@ -25,6 +25,7 @@ void TexProjRotShader::Start(const Mesh& InMesh)
 
     std::vector<float> TrianglesMesh;
     FlattenTriangles(InMesh, TrianglesMesh);
+    TrianglesCount = TrianglesMesh.size()/8;
 
     glGenBuffers(1, &PosUvVbo);
     glBindBuffer(GL_ARRAY_BUFFER, PosUvVbo);
@@ -63,5 +64,5 @@ void TexProjRotShader::Update(float DeltaTime)
     glUniform3fv(glGetUniformLocation(ProgramId, "obj_rot"), 1, (GLfloat*)Obj->Tr.Rotation.data());
     glUniform3fv(glGetUniformLocation(ProgramId, "obj_scale"), 1, (GLfloat*)Obj->Tr.Scale.data());
 
-    glDrawArrays(GL_TRIANGLES, 0, 36);
+    glDrawArrays(GL_TRIANGLES, 0, TrianglesCount);
 }

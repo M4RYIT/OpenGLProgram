@@ -62,7 +62,7 @@ void main()
 
     mod_pos.x += obj_pos.x;
     mod_pos.y += obj_pos.y;
-    mod_pos.z += -obj_pos.z;
+    mod_pos.z += obj_pos.z;
 
     mod_pos = perspective(mod_pos);
 

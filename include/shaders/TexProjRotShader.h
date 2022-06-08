@@ -22,4 +22,5 @@ public:
     Camera* Cam;
     Object* Obj;
     float AspectRatio;
+    int TrianglesCount;
 };

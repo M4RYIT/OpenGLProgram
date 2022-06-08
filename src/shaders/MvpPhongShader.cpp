@@ -41,7 +41,7 @@ void MvpPhongShader::Start(const Mesh& InMesh)
     glEnableVertexAttribArray(1);
 
     glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(5 * sizeof(float)));
-    glEnableVertexAttribArray(1);
+    glEnableVertexAttribArray(2);
 
     glUseProgram(ProgramId);
 
@@ -84,6 +84,8 @@ void MvpPhongShader::Update(float DeltaTime)
 
     glUniform3fv(glGetUniformLocation(ProgramId, "point_light_pos"), 1, (GLfloat*)PointLight->Owner.Tr.Position.data());
     glUniform3fv(glGetUniformLocation(ProgramId, "camera_pos"), 1, (GLfloat*)Cam->Tr.Position.data());
+    glUniform4fv(glGetUniformLocation(ProgramId, "light_col"), 1, (GLfloat*)&PointLight->LightColor);
+    glUniform1f(glGetUniformLocation(ProgramId, "light_intensity"), (GLfloat)PointLight->LightIntensity);
 
     glDrawArrays(GL_TRIANGLES, 0, TrianglesCount);
 }

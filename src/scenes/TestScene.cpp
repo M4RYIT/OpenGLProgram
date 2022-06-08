@@ -14,6 +14,7 @@
 #include "shaders\TexBlendShader.h"
 #include "shaders\TexProjRotShader.h"
 #include "shaders\TexProjShader.h"
+#include "shaders\DoubleDrawShader.h"
 #include "singletons\Settings.h"
 #include "singletons\Renderer.h"
 #include <glad\glad.h>
@@ -32,7 +33,7 @@ void TestScene::Init()
     Renderer::Get().SetViewport(ViewportPos[0], ViewportPos[1], ViewportSize[0], ViewportSize[1]);
     Renderer::Get().SetBackgroundColor(0.5f, 0.5f, 0.5f, 1.f);
     Cam = new Camera();
-    MvpPhong();
+    DoubleDraw();
 }
 
 void TestScene::SimpleTriangle()
@@ -183,16 +184,17 @@ void TestScene::TexProj()
 void TestScene::TexProjRot()
 {
     Mesh CubeMesh;
-    ParseObj("resources/models/cube_no_norm.obj", CubeMesh);
+    ParseObj("resources/models/stormtrooper.obj", CubeMesh);
 
     Object* CubeObj = new Object();
-    CubeObj->Tr.Position[2] += 5.f;
+    CubeObj->Tr.Position[2] -= 5.f;
+    CubeObj->Tr.Position[1] -=2.f;
 
     TexProjRotShader* TexProjRotSh = new TexProjRotShader();
     TexProjRotSh->AspectRatio = (float)ViewportSize[0] / (float)ViewportSize[1];
     TexProjRotSh->Cam = Cam;
     TexProjRotSh->Obj = CubeObj;
-    TexProjRotSh->Tex = Shader::CreateTexture("resources/textures/wood-box.jpg");
+    TexProjRotSh->Tex = Shader::CreateTexture("resources/models/stormtrooper.png");
 
     RenderComponent* RndComp = new RenderComponent(*CubeObj, TexProjRotSh, CubeMesh);
 
@@ -209,10 +211,10 @@ void TestScene::MvpPhong()
     Cam->Tr.Position[2] += 8.f;
 
     Object* LightObj = new Object();
-    LightObj->Tr.Position[0] += 4.f;
+    LightObj->Tr.Position[0] += 1.3f;
 
     Color LightCol = {1.f, 1.f, 1.f, 1.f};
-    PointLightComponent* LightComp = new PointLightComponent(*LightObj, 10.f, LightCol);
+    PointLightComponent* LightComp = new PointLightComponent(*LightObj, 1.f, LightCol);
     LightObj->AddComponent(LightComp);
 
     Mesh Mesh;
@@ -235,5 +237,32 @@ void TestScene::MvpPhong()
     Obj->AddComponent(RndComp);
 
     Objects.push_back(LightObj);
+    Objects.push_back(Obj);
+}
+
+void TestScene::DoubleDraw()
+{
+    Object* Obj = new Object();
+    Obj->Tr.Position[2] -= 5.f;
+    Obj->Tr.Position[1] -= 2.f;
+    Obj->Tr.Position[0] -= 2.f;
+    
+    Mesh Mesh;
+    ParseObj("resources/models/stormtrooper.obj", Mesh);
+
+    DoubleDrawShader* DoubleDrawSh = new DoubleDrawShader();
+    DoubleDrawSh->AspectRatio = (float)ViewportSize[0] / (float)ViewportSize[1];
+    DoubleDrawSh->Cam = Cam;
+    DoubleDrawSh->Obj = Obj;
+    DoubleDrawSh->Tex = Shader::CreateTexture("resources/models/stormtrooper.png");
+    DoubleDrawSh->Mirror = DoubleDrawShader::MirrorFlags::X;
+
+    RenderComponent* RndComp = new RenderComponent(*Obj, DoubleDrawSh, Mesh);
+
+    RotatorComponent* RotComp = new RotatorComponent(*Obj, 0.f, 20.f, 0.f);
+
+    Obj->AddComponent(RndComp);
+    Obj->AddComponent(RotComp);
+
     Objects.push_back(Obj);
 }

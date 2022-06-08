@@ -16,4 +16,5 @@ public:
     void TexProj();
     void TexProjRot();
     void MvpPhong();
+    void DoubleDraw();
 };
