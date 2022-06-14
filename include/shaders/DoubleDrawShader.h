@@ -26,6 +26,7 @@ public:
     virtual void Start(const Mesh& InMesh) override;
     virtual void Update(float DeltaTime) override;
     glm::vec3 GetMaxVert(const std::vector<float>& Vertices);
+    glm::vec3 GetMinVert(const std::vector<float>& Vertices);
 
     GLuint Tex;
     Camera* Cam;
@@ -34,7 +35,7 @@ public:
     glm::mat4 Model;
     glm::mat4 View;
     glm::mat4 Projection;
-    glm::vec3 MaxVertex;
+    glm::vec3 VertexRange;
 
     float AspectRatio;
     int TrianglesCount;

@@ -24,15 +24,23 @@ glm::vec3 DoubleDrawShader::GetMaxVert(const std::vector<float>& Vertices)
     glm::vec3 MaxVert = glm::vec3(Vertices[0], Vertices[1], Vertices[2]);
     for (int i=0; i<Vertices.size(); i+=3)
     {
-        if (Vertices[i] > 1.0f)
-        {
-            int c = 3;
-        }
         if (Vertices[i] > MaxVert.x) MaxVert.x = Vertices[i];
         if (Vertices[i + 1] > MaxVert.y) MaxVert.y = Vertices[i + 1];
         if (Vertices[i + 2] > MaxVert.z) MaxVert.z = Vertices[i + 2];
     }
     return MaxVert;
+}
+
+glm::vec3 DoubleDrawShader::GetMinVert(const std::vector<float>& Vertices)
+{
+    glm::vec3 MinVert = glm::vec3(Vertices[0], Vertices[1], Vertices[2]);
+    for (int i=0; i<Vertices.size(); i+=3)
+    {
+        if (Vertices[i] < MinVert.x) MinVert.x = Vertices[i];
+        if (Vertices[i + 1] < MinVert.y) MinVert.y = Vertices[i + 1];
+        if (Vertices[i + 2] < MinVert.z) MinVert.z = Vertices[i + 2];
+    }
+    return MinVert;
 }
 
 void DoubleDrawShader::Start(const Mesh& InMesh)
@@ -43,7 +51,7 @@ void DoubleDrawShader::Start(const Mesh& InMesh)
     std::vector<float> TrianglesMesh;
     FlattenTriangles(InMesh, TrianglesMesh);
     TrianglesCount = TrianglesMesh.size()/8;
-    MaxVertex = GetMaxVert(InMesh.Vertices);
+    VertexRange = GetMaxVert(InMesh.Vertices) - GetMinVert(InMesh.Vertices);
 
     glGenBuffers(1, &PosUvVbo);
     glBindBuffer(GL_ARRAY_BUFFER, PosUvVbo);
@@ -102,9 +110,9 @@ void DoubleDrawShader::Update(float DeltaTime)
     MirrorScale.z *= (Mirror & Z)?-1.f:1.f;
 
     glm::vec3 MirrorPos = ToVec3(Obj->Tr.Position);
-    MirrorPos.x += MaxVertex.x * 2.f * ((Mirror & X)?-MirrorScale.x:0.f);
-    MirrorPos.y += MaxVertex.y * 2.f * ((Mirror & Y)?MirrorScale.y:0.f);
-    MirrorPos.z += MaxVertex.z * 2.f * ((Mirror & Z)?MirrorScale.z:0.f);
+    MirrorPos.x += VertexRange.x * ((Mirror & X)?-MirrorScale.x:0.f);
+    MirrorPos.y += VertexRange.y * ((Mirror & Y)?-MirrorScale.y:0.f);
+    MirrorPos.z += VertexRange.z * ((Mirror & Z)?-MirrorScale.z:0.f);
 
     glm::vec3 MirrorRot = ToVec3(Obj->Tr.Rotation);
     MirrorRot.x *= (Mirror & (Y|Z))?-1.f:1.f;
